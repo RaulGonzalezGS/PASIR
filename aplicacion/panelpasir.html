@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Panel PASIR</title>
+    <link rel="stylesheet" href="../bootstrap.min.css">
+</head>
+<body>
+
+<div style="float: right;">
+    <p id="usuariosesion" style="display: inline;"></p>
+    <input type="submit" id="cerrarsesion" value="Cerrar sesion" class="btn btn-outline-secondary" style="padding: 5px 10px;">
+</div><br>
+
+<div class="container-fluid">
+    <h1 class="h5">Parámetros del contenedor de Docker</h1>
+    <label for="direccionamiento" class="col-form-label col-form-label-lg">Direccionamiento de red:</label>
+    <input type="text" id="direccionamiento" class="form-control" style="display: inline; width: 20%;"><br>
+</div><br>
+
+<div class="container-fluid">
+    <h1 class="h5">Despliegue de servicios:</h1>
+    <label for="servicios" class="col-form-label col-form-label-lg">Servicios:</label>
+    <select id="servicios" class="form-control" style="display: inline; width: 20%;">
+        <option selected>Servicios</option>
+        <option>CMS Wordpress</option>
+    </select>
+</div><br>
+
+<div class="container-fluid">
+    <h1 class="h5">Asignar Alta Disponibilidad:</h1>
+    <label for="direccionamiento" class="col-form-label col-form-label-lg">Alta Disponibilidad:</label>
+
+    <div class="custom-control custom-radio custom-control-inline">
+        <input type="radio" id="Kubernetes" name="altadisponibilidad" value="Kubernetes" class="custom-control-input">
+        <label for="Kubernetes" class="custom-control-label">Kubernetes</label>
+    </div>
+
+    <div class="custom-control custom-radio custom-control-inline">
+        <input type="radio" id="Docker_swarm" name="altadisponibilidad" value="Docker swarm" class="custom-control-input">
+        <label for="Docker_swarm" class="custom-control-label">Docker swarm</label>
+    </div>
+</div><br>
+
+<input type="submit" id="botonpar" value="Enviar" class="btn btn-primary" style="margin-left: 31%;">
+
+<script type="text/javascript">
+
+    var usuariosesion = document.getElementById("usuariosesion");
+    var direccionamiento = document.getElementById("direccionamiento");
+    var servicios = document.getElementById("servicios");
+    var altadisponibilidad = document.getElementsByName("altadisponibilidad");
+
+    var cerrarsesion = document.getElementById("cerrarsesion");
+    var botonpar = document.getElementById("botonpar");
+    cerrarsesion.addEventListener("click", cerrarses);
+    botonpar.addEventListener("click", enviarpar);
+
+    var xhreq = new XMLHttpRequest();
+
+    var parametros = {
+    }
+
+    parametros["cont"] = "sesionusu";
+    xhreq.open("POST", "pasircontroller.php", true);
+    xhreq.onreadystatechange = sesion;
+    xhreq.send(JSON.stringify(parametros));
+
+    function sesion() {
+        if ((xhreq.readyState == 4) && (xhreq.status == 200)) {
+            let result = JSON.parse(xhreq.responseText);
+
+            usuariosesion.innerHTML = result.usuariosesion;
+
+            if (result.mensaje == "Sesion cerrada") {
+                window.location.replace("http://localhost/PASIR/aplicacion/login.html");
+            }
+        }
+    }
+
+    function cerrarses(event) {
+        parametros["cont"] = "cerrarsesion";
+        xhreq.open("POST", "pasircontroller.php", true);
+        xhreq.send(JSON.stringify(parametros));
+
+        window.location.replace("http://localhost/PASIR/aplicacion/login.html");
+    }
+
+    function enviarpar(event) {
+        parametros["cont"] = "enviarparametros";
+        parametros["usuarioses"] = usuariosesion.innerHTML;
+        parametros["Docker"] = direccionamiento.value;
+
+        if (servicios.value == "Servicios"){
+            parametros["Servicios"] = "";
+        }
+        else {
+            parametros["Servicios"] = servicios.value;
+        }
+
+        parametros["HA"] = "";
+
+        for (i = 0; i < altadisponibilidad.length; i++){
+            if (altadisponibilidad[i].checked == true) {
+                parametros["HA"] = altadisponibilidad[i].value;
+            }
+        }
+
+        if ((parametros["Docker"] == "") && (parametros["Servicios"] == "") && (parametros["HA"] == "")){
+            alert("No has introducido los parametros correctamente");
+        }
+        else {
+            xhreq.open("POST", "pasircontroller.php", true);
+            xhreq.onreadystatechange = recibirpar;
+            xhreq.send(JSON.stringify(parametros));
+        }
+    }
+
+    function recibirpar() {
+        if ((xhreq.readyState == 4) && (xhreq.status == 200)) {
+            let result = JSON.parse(xhreq.responseText);
+            alert(result.mensaje);
+        }
+    }
+
+</script>
+
+</body>
+</html>

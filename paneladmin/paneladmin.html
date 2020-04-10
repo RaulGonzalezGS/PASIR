@@ -3,71 +3,86 @@
 <head>
     <meta charset="UTF-8">
     <title>Panel de administración</title>
+    <link rel="stylesheet" href="../bootstrap.min.css">
 </head>
 <body>
-<div style="width: 30%; float: left;">
-    <fieldset style="width: 250px;">
-    <legend>Perfiles de usuario</legend>
 
-    Asignar perfiles a los usuarios<br>
-    <select id="usuariosper" style="margin: 5px;">
+<div style="float: right;">
+    <p id="usuariosesion" style="display: inline;"></p>
+    <input type="submit" id="cerrarsesion" value="Cerrar sesion" class="btn btn-outline-secondary" style="padding: 5px 10px;">
+</div><br>
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-6">
+            <h1 class="h5">Perfiles de usuario</h1>
+            Asignar perfiles a los usuarios<br>
+
+            <div class="row">
+                <div class="col-6">
+                    <select id="usuariosper" class="form-control">
+                        <option selected>Usuario</option>
+                    </select>
+                </div>
+
+                <div class="col-6">
+                    <select id="perfilesusu" class="form-control">
+                        <option selected>Perfiles</option>
+                    </select>
+                </div>
+            </div><br>
+
+            <input type="submit" id="botonper" value="Guardar" class="btn btn-primary" style="float: right;">
+        </div>
+
+        <div class="col-6">
+            <h1 class="h5">Acciones</h1>
+            Asignar perfiles a las acciones<br>
+
+            <div class="row">
+                <div class="col-8">
+                    <select id="acciones" class="form-control">
+                        <option selected>Acciones</option>
+                    </select>
+                </div>
+
+                <div class="col-2">
+                    <select id="perfilesacc" class="form-control" style="width: 240%;">
+                        <option selected>Perfiles</option>
+                    </select>
+                </div>
+            </div><br>
+
+            <input type="submit" id="botonacc" value="Guardar" class="btn btn-primary" style="float: right;">
+
+        </div>
+    </div>
+</div>
+
+<div class="container-fluid">
+    <h1 class="h5">Crear usuario</h1>
+
+    <label for="usuario" class="col-form-label col-form-label-lg">Nombre:</label>
+    <input type="text" id="usuario" class="form-control" style="width: 20%;"><br>
+    <label for="contrasena" class="col-form-label col-form-label-lg">Contraseña:</label>
+    <input type="password" id="contrasena" class="form-control" style="width: 20%;">
+    <input type="submit" id="botonusu" value="Crear" class="btn btn-primary" style="margin-right: 73%; width: 4.6%; float: right;">
+</div><br>
+
+<div class="container-fluid">
+    <h1 class="h5">Eliminar usuario</h1>
+
+    <select id="usuarioselim" class="form-control" style="display: inline; width: 20%;">
         <option selected>Usuario</option>
     </select>
 
-    <select id="perfilesusu" style="margin: 5px;">
-        <option selected>Perfiles</option>
-    </select><br>
+    <input type="submit" id="botonelimusu" value="Borrar" class="btn btn-primary" style="margin-right: 73%; float: right;">
 
-    <input type="submit" id="botonper" value="Guardar" style="float: right;">
-
-    </fieldset>
-</div>
-
-<div style="width: 68%; float: right;">
-    <fieldset style="width: 525px;">
-        <legend>Acciones</legend>
-
-        Asignar perfiles a las acciones<br>
-        <select id="acciones" style="margin: 5px;">
-            <option selected>Acciones</option>
-        </select>
-
-        <select id="perfilesacc" style="margin: 5px;">
-            <option selected>Perfiles</option>
-        </select><br>
-
-        <input type="submit" id="botonacc" value="Guardar" style="float: right;">
-
-    </fieldset>
-</div><br><br><br><br><br><br><br>
-
-<div>
-    <fieldset style="width: 250px;">
-        <legend>Crear usuario</legend>
-
-        <label for="usuario">Nombre:</label>
-        <input type="text" id="usuario" size="23" style="margin: 5px"><br>
-        <label for="contrasena">Contraseña:</label>
-        <input type="password" id="contrasena" size="23" style="margin: 5px"><br>
-        <input type="submit" id="botonusu" value="Crear" style="float: right;">
-
-    </fieldset>
-</div><br>
-
-<div>
-    <fieldset style="width: 250px;">
-        <legend>Eliminar usuario</legend>
-
-        <select id="usuarioselim" style="margin: 5px;">
-            <option selected>Usuario</option>
-        </select>
-
-        <input type="submit" id="botonelimusu" value="Borrar" style="float: right;">
-
-    </fieldset>
 </div>
 
 <script type="text/javascript">
+
+    var usuariosesion = document.getElementById("usuariosesion");
 
     var nombreusu = document.getElementById("usuario");
     var contrasena = document.getElementById("contrasena");
@@ -80,10 +95,12 @@
 
     var acciones = document.getElementById("acciones");
 
+    var cerrarsesion = document.getElementById("cerrarsesion");
     var botonusu = document.getElementById("botonusu");
     var botonper = document.getElementById("botonper");
     var botonacc = document.getElementById("botonacc");
     var botonelimusu = document.getElementById("botonelimusu");
+    cerrarsesion.addEventListener("click",cerrarses);
     botonusu.addEventListener("click",crearusuario);
     botonper.addEventListener("click",asignarper);
     botonacc.addEventListener("click",asignaracc);
@@ -102,6 +119,12 @@
     function act() {
         if ((xhreq.readyState == 4) && (xhreq.status == 200)) {
             let result = JSON.parse(xhreq.responseText);
+
+            usuariosesion.innerHTML = result.usuariosesion;
+
+            if (result.mensaje == "Sesion cerrada") {
+                window.location.replace("http://localhost/PASIR/paneladmin/loginconsola.html");
+            }
 
             for (i = 0; i < result.resultadousu.length; i++) {
                 var opcionesusu = document.createElement("option");
@@ -131,6 +154,14 @@
         }
     }
 
+    function cerrarses(event) {
+        datosusu["cont"] = "cerrarsesion";
+        xhreq.open("POST", "panelcontroller.php", true);
+        xhreq.send(JSON.stringify(datosusu));
+
+        window.location.replace("http://localhost/PASIR/paneladmin/loginconsola.html");
+    }
+
     function crearusuario(event) {
         datosusu["nombreusuario"] = nombreusu.value;
         datosusu["contrasenausuario"] = contrasena.value;
@@ -138,6 +169,20 @@
 
         if ((nombreusu.value == "") || (contrasena.value == "")) {
             alert("No has escrito el nombre de usuario o la contrasena correctamente");
+        }
+        else {
+            xhreq.open("POST", "panelcontroller.php", true);
+            xhreq.onreadystatechange = recibirusu;
+            xhreq.send(JSON.stringify(datosusu));
+        }
+    }
+
+    function eliminarusu(event) {
+        datosusu["usuarioelim"] = usuarioselim.value;
+        datosusu["cont"] = "eliminarusu";
+
+        if (usuarioselim.value == "Usuario"){
+            alert("No has seleccionado el usuario correctamente");
         }
         else {
             xhreq.open("POST", "panelcontroller.php", true);
@@ -198,20 +243,6 @@
         else {
             xhreq.open("POST", "panelcontroller.php", true);
             xhreq.onreadystatechange = recibirmen;
-            xhreq.send(JSON.stringify(datosusu));
-        }
-    }
-
-    function eliminarusu(event) {
-        datosusu["usuarioelim"] = usuarioselim.value;
-        datosusu["cont"] = "eliminarusu";
-
-        if (usuarioselim.value == "Usuario"){
-            alert("No has seleccionado el usuario correctamente");
-        }
-        else {
-            xhreq.open("POST", "panelcontroller.php", true);
-            xhreq.onreadystatechange = recibirusu;
             xhreq.send(JSON.stringify(datosusu));
         }
     }

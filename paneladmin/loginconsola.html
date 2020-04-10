@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Validación de credenciales en la consola de administración</title>
+    <link rel="stylesheet" href="../bootstrap.min.css">
+    <style type="text/css">
+        body {
+            background-color: lightgray;
+        }
+    </style>
+</head>
+<body>
+
+<div class="text-center" style="margin: 15%;">
+    <h1 class="h5">Inicio de sesión al panel de administración</h1>
+    <label for="usuario" class="col-form-label col-form-label-lg">Usuario con perfil admin:</label><br>
+    <input type="text" id="usuario" class="form-control" style="width: 30%; margin-left: 35%;"><br>
+    <label for="contrasena" class="col-form-label col-form-label-lg">Contraseña:</label><br>
+    <input type="password" id="contrasena" class="form-control" style="width: 30%; margin-left: 35%;"><br>
+    <input type="submit" id="credenciales" value="Enviar" class="btn btn-primary" style="width: 20%;">
+</div>
+
+<script type="text/javascript">
+
+    var usuario = document.getElementById("usuario");
+    var contrasena = document.getElementById("contrasena");
+
+    var boton = document.getElementById("credenciales");
+
+    boton.addEventListener("click",validacioncred);
+
+    var xhreq = new XMLHttpRequest();
+
+    var credenciales = {
+    }
+
+    function validacioncred(event) {
+        credenciales["usuario"] = usuario.value;
+        credenciales["contrasena"] = contrasena.value;
+        credenciales["cont"] = "validarcred";
+
+        if ((usuario.value == "") || (contrasena.value == "")) {
+            alert("No has introducido las credenciales correctamente");
+        }
+        else {
+            xhreq.open("POST", "panelcontroller.php", true);
+            xhreq.onreadystatechange = recibircred;
+            xhreq.send(JSON.stringify(credenciales));
+        }
+    }
+
+    function recibircred() {
+        if ((xhreq.readyState == 4) && (xhreq.status == 200)) {
+            let result = JSON.parse(xhreq.responseText);
+
+            if (result.mensaje == "Usuario validado") {
+                window.location.replace("http://localhost/PASIR/paneladmin/paneladmin.html");
+            }
+            else {
+                alert("El usuario o la contraseña son incorrectos");
+            }
+        }
+    }
+</script>
+</body>
+</html>
