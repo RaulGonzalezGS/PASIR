@@ -2,7 +2,7 @@
 
 ## Día miércoles, 1 de abril de 2020
 
-Entrega del trabajo y preparación en la capacidad de resolución.
+Entrega del primer trabajo y preparación en la capacidad de resolución.
 
 ## Día jueves, 2 de abril de 2020
 
@@ -27,7 +27,7 @@ menús desplegables al crearlos o eliminarlos en la base de datos.
 
 ## Día domingo, 5 de abril de 2020
 
-Realización del repositorio de github y subida provisional del trabajo. 
+Realización del primer repositorio de github y subida provisional del trabajo. 
 
 ## Día lunes, 6 de abril de 2020
 
@@ -55,3 +55,44 @@ front-end del panel de administración.
 ## Día viernes, 10 de abril de 2020
 
 Subida al repositorio de github del trabajo.
+
+## Día domingo, 12 de abril de 2020
+
+Entrega del segundo trabajo y preparación en la capacidad de resolución.
+
+## Día lunes, 13 de abril de 2020
+
+Realización de la instalación compilada de un servidor Nagios Core, e 
+instalación de un servidor Tomcat, MySQL y NRPE en el servidor de aplicaciones.
+
+## Día martes, 14 de abril de 2020
+
+Realización de la monitorización por ping con un refresco de 30 minutos del 
+servidor de aplicaciones.
+
+## Día miercoles, 15 de abril de 2020
+
+Realización de la monitorización de los servicios ssh, http por el puerto 
+8080 del servidor Tomcat, y MySQL, del servidor de aplicaciones.
+
+## Día jueves, 16 de abril de 2020
+
+Realización de la instalación compilada del plugin de nagios de chequeo por 
+el protocolo NRPE, y monitorización por NRPE del nivel de uso de disco del 
+servidor de aplicaciones.
+
+## Día viernes, 17 de abril de 2020
+
+Realización de la instalación del plugin de nagios de chequeo de uso de 
+memoria RAM, y monitorización por NRPE del nivel de uso de memoria RAM, y 
+uso de CPU, del servidor de aplicaciones.
+
+## Día sabado, 18 de abril de 2020
+
+Realización de la monitorización por NRPE del estado, uso de memoria RAM, 
+número de reinicios, tiempo de servicio, y uso de CPU, de un contenedor de 
+Docker del servidor de aplicaciones.
+
+## Día domingo, 19 de abril de 2020
+
+Realización del segundo repositorio de github y subida provisional del trabajo.
