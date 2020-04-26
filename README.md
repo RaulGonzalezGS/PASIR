@@ -96,3 +96,32 @@ Docker del servidor de aplicaciones.
 ## Día domingo, 19 de abril de 2020
 
 Realización del segundo repositorio de github y subida provisional del trabajo.
+
+## Día lunes, 20 de abril de 2020
+
+Realización de la aplicación Hola mundo! en java, y estructura de la base 
+de datos.
+
+## Día martes, 21 de abril de 2020
+
+Realización de la aplicación de mostrar el contenido de la base de datos en 
+java.
+
+## Día miercoles, 22 de abril de 2020
+
+Realización de la instalación del driver JDBC de MySQL usando el gestor de 
+dependencias Maven.
+
+## Día jueves, 23 de abril de 2020
+
+Realización de la aplicación web Hola mundo!, y despliegue en el servidor de 
+aplicaciones.
+
+## Día viernes, 24 de abril de 2020
+
+Realización de la monitorización del contenido de la aplicación web del 
+servidor de aplicaciones.
+
+## Día sabado, 25 de abril de 2020
+
+Subida al repositorio de github del trabajo.
